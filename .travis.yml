@@ -12,12 +12,12 @@ script:
 deploy:
   provider: releases
   api_key:
-    secure: nSzsNZeeR5wKud3CHP1MD3r9Uc9vy0hE4ZBLz0U3ATpcpUfh/WB15axs6wU1rOot8mxCo8+FLAhXt0RGfw3kZmEdId/VyBxmunOFDX4hGmXPzCi7ov9RXFsYWKuKOo9owodir+Iu0xF+UrzBKmPKATuRcc5JyW36IdHjFgG1ru41eNMWPk/A4Nre1yWpPh6gK/Fadl261/uuh2hfZbce48yRpzvAjdKWPXPZREjONZi8vwLBLjpS+s9YMaIWvZh+zYjM+jYpPB5MB+R8bjRi9kFkFwTjj0UcI1k/XJ+drdcNKuBfGiHlKu0ACt7HsO5uQWj/PTzy1LQnB45Rf4Dw6qEOIoxPBvlq5gt972LaAuLP5lldAlTcd+pvEntqbe2ziXSaWwTy2/wRx5Bx6xxgB7TSQ7J3JoPNSR9EGY4/3NIosK+4BTl77L7jVhLLxRopxge0PSs7/qej0ZhPJ5JdGWmVlATNZ006PEKdqwiUe+lyEsuuBqBqSlXgBwW1g2jZdkV+dwgpsF9w4MZW7ePFg0xvUEDIYFEs1Jv1ydrVkiRohXzwxZUbK+2xWIAEEiGXg3YR57fzDCCPjfGUHAMCLHeKWJd2SAFgOOXV6Hb2ztlCpLLy9wdL2KXTvDe5Vx1cKxADkW2ixRF0KR9rlCMdmTMmYsJfiUprTpUOQhhXXqs=
-  file: .pioenvs/emontx-3phase_deploy/firmware.hex
+    secure: q+9mQYuBTjRsB2TMEEHZ3IBiPG+wPJuX+9nOS8gRnhmZ4gIWZMk+IXRi26EjwXu3T9Keu/4bbQBpu9lq1LgocvP9tHcGUIY9k1inJHYxZJPTMo62BL2F+sTDuvCkULbdZZPPAxaW6ixkXtKKQNF759IeU7UzvTyJqm0B0Z8vU277uuskyMv2H2dPSXPJLDEpKWF0CRxZZPbEBMDoQi3E+I5nK8q1EfA024TEdaSM4ndE9RDaKQpmaOOldGGVcupj9iemsQuLrjjSsSU8tSIW09lpX6PmhkpGjr1ACViw0une+CMnBjS+6kPv+3UAGuw0+NuEt7UJMJwAIZjdP80zHUnDy+LRNPO2hVrR5FMmiWcVNMBv7drXIC7mA5v1RdqJmFyqcBAN6tJzRo951uuAK5pF6LmMaXQ9Fuw1kwohPDrjtY75g/UcqRVCaZXyoVxuJ7t1jyReFquXBfmBDWuc5deUOPvDgcUY424N+SwuWpP7JBSDRdsXe4JKvuGmvxFPJTEYjx8/kwjfCI6aNYuXpDXnJw6ep6OXZdWd5oY9hqN39OfDtrQ6HHu2wLH2QZvtSOP/nCMyDHTUPXiLSeLxnNNz7Yu1DK4StgDIZEhmqD8RwB8m2hclIdKqPgGReqaU+JQI9KwkrWKRca0/qEW+BKOIBtHdtG9NtgAbItG/P7k=
+  file: ".pioenvs/emontx-3phase_deploy/firmware.hex"
   on:
     repo: openenergymonitor/emontx-3phase
     all_branches: true
-    condition: $TRAVIS_TAG =~ ^[0-9]+\.[0-9]+\.[0-9]+$
+    condition: "$TRAVIS_TAG =~ ^[0-9]+\\.[0-9]+\\.[0-9]+$"
 
 ## Setup auto depoly .hex on release tag
 # gem install travis
