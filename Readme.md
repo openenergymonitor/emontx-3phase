@@ -1,5 +1,8 @@
 # emonTx V3 3-phase Firmware
 
+[![Build Status](https://travis-ci.org/openenergymonitor/emontx-3phase.svg?branch=master)](https://travis-ci.org/openenergymonitor/emontx-3phase)
+
+
 **The emonTx V3 has been designed for single-phase AC monitoring, however the emonTx can monitor 'approximate' three-phase (assuming balanced phases) using this firmware. [Further reading](https://openenergymonitor.org/emon/buildingblocks/3-phase-power)**
 
 ## Required Hardware
