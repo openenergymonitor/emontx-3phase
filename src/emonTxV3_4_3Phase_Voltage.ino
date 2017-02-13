@@ -491,7 +491,7 @@ void loop()
             Serial.print(emontx.temp[j]);
         } 
     }
-    Serial.print("\n");
+    Serial.println();
 
     #endif  // if defined SERIALOUT && !defined EMONESP
 
@@ -547,7 +547,7 @@ void loop()
             Serial.print(' ');
         } 
     }
-    Serial.print("\n");
+    Serial.println();
 
     if (pulses)                                      // if the ISR has counted some pulses, update the total count
     {
