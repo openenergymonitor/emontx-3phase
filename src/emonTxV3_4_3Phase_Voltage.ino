@@ -26,6 +26,7 @@ V0.10 31/1/2017    Added ESP  WiFi module support - Glyn Hudson. Temp fault code
                    3010 = Sensor has never been detected since power-up/reset. 3020	= Sensor returned an out-of-range value. 
                    850 although in range, might indicate a wiring fault.
                    Pulse counting added. (RW)
+V0.11 13/02/2017  Changed newline line endings for newline + carriage return line endings https://community.openenergymonitor.org/t/3-phase-serial-connection-emonhub-query/3099?u=pb66
 
 emonTx documentation: http://wiki.openenergymonitor.org/index.php/Main_Page#Monitoring_Nodes
 emonTx firmware code explanation: http://openenergymonitor.org/emon/modules/emontx/firmware
