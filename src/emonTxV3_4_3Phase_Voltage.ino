@@ -131,8 +131,8 @@ emonhub.conf node decoder settings for this sketch:
                                                  //  This is turned off when SERIALOUT or EMONESP (see below) is defined.
 
 #define USEPULSECOUNT                            // include the ability to count pulses. Comment this line if pulse counting is not required.
-#define PULSEINT 1                               // Interrupt no. for pulse counting: EmonTx V2 = 0, EmonTx V3 = 1, EmonTx Shield - see Wiki
-#define PULSEPIN 3                               // Interrupt input pin: EmonTx V2 = 2, EmonTx V3 = 3, EmonTx Shield - see Wiki
+#define PULSEINT 1                               // Interrupt no. for pulse counting: EmonTx V2 = 1, EmonTx V3.2(RFu) = 0, EmonTx V3.4 = 1, EmonTx Shield - see Wiki
+#define PULSEPIN 3                               // Interrupt input pin: EmonTx V2 = 3, EmonTx V3.2(RFu) = 2, EmonTx V3.4 = 3, EmonTx Shield - see Wiki
                                                  //  Also, set the PulseMinPeriod (below) for contact debouncing.
 
 
@@ -181,9 +181,9 @@ emonhub.conf node decoder settings for this sketch:
 #define RFPWR 0x99                               // Transmitter power: 0x9F = +13 dBm (max) (see notes in comment above)
                                                  
 #define RFMSELPIN 10                             // Pins for the RFM Radio module  
-                                                 // 10 for the V3.4; 5 or 10 for the Shield but depending on jumper setting, 4 for the V3.2/RFu_328 V1.2
+                                                 // EmonTx V2 = 10, EmonTx V3.2(RFu) = 4, EmonTx V3.4 = 10, EmonTx Shield = 5 or 10 (depending on jumper setting)
 #define RFMIRQPIN 2                              // Pins for the RFM Radio module:
-                                                 //  2 for the V3.4; 2 or  3 for the Shield but depending on jumper setting, 3 for the V3.2/RFu_328 V1.2
+                                                 // EmonTx V2 = 2, EmonTx V3.2(RFu) = 3, EmonTx V3.4 = 2, EmonTx Shield = 2 or 2 (depending on jumper setting)
 
 #define DS18B20_PWR 19                           // DS18B20 Power pin - all versions
 #define ONE_WIRE_BUS 5                           // DS18B20 Data      - 5 for the V3.4; 4 for the Shield 
