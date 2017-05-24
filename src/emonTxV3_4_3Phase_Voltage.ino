@@ -183,7 +183,7 @@ emonhub.conf node decoder settings for this sketch:
 #define RFMSELPIN 10                             // Pins for the RFM Radio module  
                                                  // EmonTx V2 = 10, EmonTx V3.2(RFu) = 4, EmonTx V3.4 = 10, EmonTx Shield = 5 or 10 (depending on jumper setting)
 #define RFMIRQPIN 2                              // Pins for the RFM Radio module:
-                                                 // EmonTx V2 = 2, EmonTx V3.2(RFu) = 3, EmonTx V3.4 = 2, EmonTx Shield = 2 or 2 (depending on jumper setting)
+                                                 // EmonTx V2 = 2, EmonTx V3.2(RFu) = 3, EmonTx V3.4 = 2, EmonTx Shield = 2 or 3 (depending on jumper setting)
 
 #define DS18B20_PWR 19                           // DS18B20 Power pin - all versions
 #define ONE_WIRE_BUS 5                           // DS18B20 Data      - 5 for the V3.4; 4 for the Shield 
