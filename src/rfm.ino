@@ -25,7 +25,7 @@ void rfm_init(void)
 	SPI.begin();
 	SPI.setBitOrder(MSBFIRST);
 	SPI.setDataMode(0);
-	SPI.setClockDivider(SPI_CLOCK_DIV8);
+	SPI.setClockDivider(SPI_CLOCK_DIV4); // decided to slow down from DIV2 after SPI stalling in some instances, especially visible on mega1284p when RFM69 and FLASH chip both present
 	
 	// Initialise RFM69CW
 	do 
@@ -76,7 +76,6 @@ void rfm_send(const byte *data, const byte size, const byte group, const byte no
 	while (readReg(REG_IRQFLAGS2) & (IRQ2_FIFONOTEMPTY | IRQ2_FIFOOVERRUN))		// Flush FIFO
         readReg(REG_FIFO);
 
-	writeReg(REG_OPMODE, (readReg(REG_OPMODE) & 0xE3) | MODE_TRANSMITTER);		// Transmit mode
     writeReg(REG_DIOMAPPING1, 0x00); 											// PacketSent
 		
 	volatile uint8_t txstate = 0;
@@ -87,7 +86,7 @@ void rfm_send(const byte *data, const byte size, const byte group, const byte no
 	{
 		if ((readReg(REG_IRQFLAGS2) & IRQ2_FIFOFULL) == 0)			// FIFO !full
 		{
-			uint8_t next = 0xAA;
+			uint8_t next;
 			switch(txstate)
 			{
 			  case 0: next=node & 0x1F; txstate++; break;    		// Bits: CTL, DST, ACK, Node ID(5)
@@ -102,11 +101,18 @@ void rfm_send(const byte *data, const byte size, const byte group, const byte no
 			writeReg(REG_FIFO, next);								// RegFifo(next);
 		}
 	}
+    //transmit buffer is now filled, transmit, flag that to the ISR
+	writeReg(REG_OPMODE, (readReg(REG_OPMODE) & 0xE3) | MODE_TRANSMITTER);		// Transmit mode - 56 Bytes max payload
+   
+    rfm_sleep();
+}
 
-	//while (readReg(REG_IRQFLAGS2) & IRQ2_FIFONOTEMPTY)			// 58 Bytes max useful payload
+void rfm_sleep(void)
+{   
+    // Put into sleep mode when buffer is empty
 	while (!(readReg(REG_IRQFLAGS2) & IRQ2_PACKETSENT))				// wait for transmission to complete (not present in JeeLib) 
-																	//   60 Bytes max useful payload
-		;
+	    delay(1);													//   
+
 	writeReg(REG_OPMODE, (readReg(REG_OPMODE) & 0xE3) | 0x01); 		// Standby Mode
 	set_sleep_mode(SLEEP_MODE_IDLE);  								// SLEEP_MODE_STANDBY
 	sleep_mode();	
@@ -147,108 +153,3 @@ void unselect() {
 	interrupts();
 }
 #endif
-
-
-/*
-Interface for the RFM12B Radio Module
-*/
-
-#ifdef RFM12B
-
-#define SDOPIN 12
-
-void rfm_init(void)
-{	
-	// Set up to drive the Radio Module
-	pinMode (RFMSELPIN, OUTPUT);
-	digitalWrite(RFMSELPIN,HIGH);
-	// start the SPI library:
-	SPI.begin();
-	SPI.setBitOrder(MSBFIRST);
-	SPI.setDataMode(0);
-	SPI.setClockDivider(SPI_CLOCK_DIV8);
-	// initialise RFM12
-	delay(200); // wait for RFM12 POR
-	rfm_write(0x0000); // clear SPI
-	#ifdef RF12_868MHZ
-	  rfm_write(0x80E7); // EL (ena dreg), EF (ena RX FIFO), 868 MHz, 12.0pF 
-	  rfm_write(0xA640); // 868.00 MHz as used JeeLib 
-	#elif defined RF12_915MHZ
-	  rfm_write(0x80F7); // EL (ena dreg), EF (ena RX FIFO), 915 MHz, 12.0pF 
-	  rfm_write(0xA640); // 912.00 MHz as used JeeLib 	
-	#else // default to 433 MHz band
-	  rfm_write(0x80D7); // EL (ena dreg), EF (ena RX FIFO), 433 MHz, 12.0pF 
-	  rfm_write(0xA640); // 434.00 MHz as used JeeLib 
-	#endif  
-	rfm_write(0x8208); // Turn on crystal,!PA
-	rfm_write(0xA640); // 433 or 868 MHz exactly
-	rfm_write(0xC606); // approx 49.2 Kbps, as used by emonTx
-	//rfm_write(0xC657); // approx 3.918 Kbps, better for long range
-	rfm_write(0xCC77); // PLL 
-	rfm_write(0x94A0); // VDI,FAST,134kHz,0dBm,-103dBm 
-	rfm_write(0xC2AC); // AL,!ml,DIG,DQD4 
-	rfm_write(0xCA83); // FIFO8,2-SYNC,!ff,DR 
-	rfm_write(0xCEd2); // SYNC=2DD2
-	rfm_write(0xC483); // @PWR,NO RSTRIC,!st,!fi,OE,EN 
-	rfm_write(0x9850); // !mp,90kHz,MAX OUT 
-	rfm_write(0xE000); // wake up timer - not used 
-	rfm_write(0xC800); // low duty cycle - not used 
-	rfm_write(0xC000); // 1.0MHz,2.2V 
-}
-
-
-// transmit data via the RFM12
-void rfm_send(const byte *data, const byte size, const byte group, const byte node)
-{
-	byte i=0,next,txstate=0;
-	word crc=~0;
-  
-	rfm_write(0x8228); // OPEN PA
-	rfm_write(0x8238);
-
-	digitalWrite(RFMSELPIN,LOW);
-	SPI.transfer(0xb8); // tx register write command
-  
-	while(txstate<13)
-	{
-		while(digitalRead(SDOPIN)==0); // wait for SDO to go high
-		switch(txstate)
-		{
-			case 0:
-			case 1:
-			case 2: next=0xaa; txstate++; break;
-			case 3: next=0x2d; txstate++; break;
-			case 4: next=group; txstate++; break;
-			case 5: next=node; txstate++; break; // node ID
-			case 6: next=size; txstate++; break;
-			case 7: next=data[i++]; if(i==size) txstate++; break;
-			case 8: next=(byte)crc; txstate++; break;
-			case 9: next=(byte)(crc>>8); txstate++; break;
-			case 10:
-			case 11:
-			case 12: next=0xaa; txstate++; break; // dummy bytes (if <3 CRC gets corrupted sometimes)
-		}
-		if((txstate>4)&&(txstate<9)) crc = _crc16_update(crc, next);
-		SPI.transfer(next);
-	}
-	digitalWrite(RFMSELPIN,HIGH);
-
-	rfm_write( 0x8208 ); // CLOSE PA
-	rfm_write( 0x8200 ); // enter sleep
-}
-
-
-// write a command to the RFM12
-word rfm_write(word cmd)
-{
-	word result;
-  
-	digitalWrite(RFMSELPIN,LOW);
-	result=(SPI.transfer(cmd>>8)<<8) | SPI.transfer(cmd & 0xff);
-	digitalWrite(RFMSELPIN,HIGH);
-	return result;
-}
-
-#endif
-
-
