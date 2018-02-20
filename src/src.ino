@@ -14,7 +14,7 @@
     Three-phase energy monitor
     V 1.0   10/12/17 The original extensively modified with diverter code removed
                      and extended for 3-phase operation.
-    V 1.1   20/02/18 Fix: remove sleep
+    V 1.1   20/02/18 Sleep (sleep_mode()) removed from rfm_sleep() in rfm.ino
 
     History (single Phase energy diverter):
     2/12/12  first published version
