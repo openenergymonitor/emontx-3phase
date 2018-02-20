@@ -99,7 +99,7 @@ int networkGroup = 210;                          //  wireless network group
 
 double vCal = 268.97;     // calculated value is 240:11.6 for UK transformer x 13:1 for resistor divider = 268.97
                           //   for the EU adapter use 260.00, for the USA adapter use 130.00
-#define VCAL_EU 251.7     // can use DIP switch 2 to set this as the starting value.                     
+#define VCAL_EU 248.2     // can use DIP switch 2 to set this as the starting value.                     
 double i1Cal = 90.91;     // calculated value is 100A:0.05A for transformer / 22 Ohms for resistor = 90.91, or 60.6 for emonTx Shield
 double i2Cal = 90.91;     // calculated value is 100A:0.05A for transformer / 22 Ohms for resistor = 90.91, or 60.6 for emonTx Shield
 double i3Cal = 90.91;     // calculated value is 100A:0.05A for transformer / 22 Ohms for resistor = 90.91, or 60.6 for emonTx Shield
