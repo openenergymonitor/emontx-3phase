@@ -14,6 +14,7 @@
     Three-phase energy monitor
     V 1.0   10/12/17 The original extensively modified with diverter code removed
                      and extended for 3-phase operation.
+    V 1.1   20/02/18 Sleep (sleep_mode()) removed from rfm_sleep() in rfm.ino
 
     History (single Phase energy diverter):
     2/12/12  first published version
@@ -41,7 +42,7 @@
     For serial input, emonHub requires "datacode = 0" in place of "datacodes = ...." as above. ]
 
 */
-const int version = 10;                          // The firmware version 1.0
+const int version = 11;                          // The firmware version 1.0
 
 #define EMONTX_V34                               // Sets the I/O pin allocation.
                                                  // use EMONTX_V2 or EMONTX_V32 or EMONTX_V34 or EMONTX_SHIELD as appropriate
@@ -99,7 +100,7 @@ int networkGroup = 210;                          //  wireless network group
 
 double vCal = 268.97;     // calculated value is 240:11.6 for UK transformer x 13:1 for resistor divider = 268.97
                           //   for the EU adapter use 260.00, for the USA adapter use 130.00
-#define VCAL_EU 251.7     // can use DIP switch 2 to set this as the starting value.                     
+#define VCAL_EU 248.2     // can use DIP switch 2 to set this as the starting value.
 double i1Cal = 90.91;     // calculated value is 100A:0.05A for transformer / 22 Ohms for resistor = 90.91, or 60.6 for emonTx Shield
 double i2Cal = 90.91;     // calculated value is 100A:0.05A for transformer / 22 Ohms for resistor = 90.91, or 60.6 for emonTx Shield
 double i3Cal = 90.91;     // calculated value is 100A:0.05A for transformer / 22 Ohms for resistor = 90.91, or 60.6 for emonTx Shield
