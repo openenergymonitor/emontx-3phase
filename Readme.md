@@ -17,16 +17,15 @@ Pulse counting and temperature monitoring using a single DS18B20 sensor is suppo
 
 ## Key Feautures
 
-• Continuous monitoring of one voltage channel and up 4 current channels.
-• Gives an accurate measure of rapidly varying loads.
-• 1800 sample sets per second – using 4 channels of an emonTx V3.4 @ 50 Hz
-• Calculates rms voltage, rms current, real & apparent power & power factor.
-• Pulse input for supply meter monitoring.
-• Integrated temperature measurement (one DS18B20 sensor).
-• User-defined reporting interval.
-• Suitable for operation on a three-phase, 4-wire supply at 50 or 60 Hz.
-• Can be calibrated for any voltage and current (default calibration is for emonTx with
-100 A CTs & UK a.c. adapter).
+- Continuous monitoring of one voltage channel and up 4 current channels.
+- Gives an accurate measure of rapidly varying loads.
+- 1800 sample sets per second – using 4 channels of an emonTx V3.4 @ 50 Hz
+- Calculates rms voltage, rms current, real & apparent power & power factor.
+- Pulse input for supply meter monitoring.
+- Integrated temperature measurement (one DS18B20 sensor).
+- User-defined reporting interval.
+- Suitable for operation on a three-phase, 4-wire supply at 50 or 60 Hz.
+- Can be calibrated for any voltage and current (default calibration is for emonTx with 100 A CTs & UK a.c. adapter).
 
 ## Limitations
 
@@ -50,9 +49,10 @@ The sketch is not compatible with the RFM12B radio module, nor the Arduino Due.
 
 ## Resources
 
-### [Introduciton to three-phase](https://learn.openenergymonitor.org/electricity-monitoring/ac-power-theory/3-phase-power)**
+### [Introduciton to three-phase](https://learn.openenergymonitor.org/electricity-monitoring/ac-power-theory/3-phase-power)
 
 ### [Full 3-phase Firmware User Guide](emontx-3-phase-userguide.pdf)
+*Including calibration insturctions*
 
 ## Required Hardware
 
