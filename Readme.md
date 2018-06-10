@@ -49,10 +49,10 @@ The sketch is not compatible with the RFM12B radio module, nor the Arduino Due.
 
 ## Resources
 
-### [Introduciton to three-phase](https://learn.openenergymonitor.org/electricity-monitoring/ac-power-theory/3-phase-power)
+### [Introduction to three-phase](https://learn.openenergymonitor.org/electricity-monitoring/ac-power-theory/3-phase-power)
 
 ### [Full 3-phase Firmware User Guide](emontx-3-phase-userguide.pdf)
-*Including calibration insturctions*
+*Including calibration instructions*
 
 ## Required Hardware
 
@@ -76,7 +76,7 @@ Depending on your ISP
 
 ## Compile & Upload
 
-- Firmware can be compiled and uploaded PlatformIO, see [User Guide](https://guide.openenergymonitor.org/technical/compiling)
+- Firmware can be compiled and uploaded with PlatformIO, see [User Guide](https://guide.openenergymonitor.org/technical/compiling)
 
 Or
 
