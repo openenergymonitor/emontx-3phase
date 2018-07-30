@@ -23,7 +23,7 @@
                       300 deg = Faulty sensor, sensor broken or disconnected.
                       301 deg = Sensor has never been detected since power-up/reset. 
                       302 deg = Sensor returned an out-of-range value. 
-    V 1.3   30/07/18 TxShield basic functionality by DBates, including EEPROM signature checking.
+    V 1.3   30/07/18 TxShield functionality improved by DBates, including EEPROM signature checking.
     
                      
     History (single Phase energy diverter):
