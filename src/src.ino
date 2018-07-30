@@ -56,7 +56,7 @@ const int version = 11;                          // The firmware version 1.10
 
 #define EMONTX_SHIELD                            // Sets the I/O pin allocation. 
                                                  // use EMONTX_V2 or EMONTX_V32 or EMONTX_V34 or EMONTX_SHIELD as appropriate
-                                                 // NOTE: You must still set the correct calibration coefficients
+                                                 // NOTE: You must still set the correct calibration coefficients and check values below.
 
 //--------------------------------------------------------------------------------------------------
 // #define DEBUGGING                             // enable this line to include debugging print statements
