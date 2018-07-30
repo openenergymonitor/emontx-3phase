@@ -27,7 +27,7 @@ const PROGMEM char helpText1[] =
 "Available commands for config during start-up:\n"
 "  <nnn>g    - set Network Group\n"
 "  <nn>i     - set node ID (standard node ids are 1..30)\n"
-"  r         - restore sketch defaults\n"
+"  r         - wipe EEPROM and restore sketch defaults\n"
 "  s         - save config to EEPROM\n"
 "  v         - Show firmware version\n"
 "  x         - exit and continue\n"
@@ -49,14 +49,14 @@ struct eeprom {byte nodeID; byte RF_freq; byte networkGroup; float vCal, i1Cal, 
 
 byte value;
 
- 
+byte signature = 035;
+const int signature_EEPROM_location = 999;
+
 static void load_config(bool verbose)
 {
   byte* src = (byte *)&data;
-  bool dataPresent = (EEPROM.read(0) != 255);
- 
- 
-  if (dataPresent)
+  
+  if (EEPROM.read(signature_EEPROM_location) == signature)
   {
       for (byte j=0; j<sizeof(data); j++, src++)
             *src = EEPROM.read(j); 
@@ -72,13 +72,12 @@ static void load_config(bool verbose)
       i3Cal        = data.i3Cal;
       i3Lead       = data.i3Lead; 
       i4Cal        = data.i4Cal; 
-      i4Lead       = data.i4Lead;      
-
+      i4Lead       = data.i4Lead;  
   }    
   
   if (verbose)
   {
-      if (dataPresent)
+      if (EEPROM.read(signature_EEPROM_location) == signature)
         Serial.println(F("Loaded EEPROM config"));
       else 
         Serial.println(F("No EEPROM config"));
@@ -119,7 +118,9 @@ static void save_config()
   data.i3Cal        = i3Cal;
   data.i3Lead       = i3Lead; 
   data.i4Cal        = i4Cal; 
-  data.i4Lead       = i4Lead;      
+  data.i4Lead       = i4Lead;    
+  
+  EEPROM.write(signature_EEPROM_location, signature);
 
 
   for (byte j=0; j<sizeof(data); j++, src++)
@@ -138,6 +139,7 @@ static void wipe_eeprom(void)
   Serial.println(F("Resetting..."));
   for (byte j=0; j<sizeof(data); j++)
       EEPROM[j] = 255;    
+      EEPROM.write(signature_EEPROM_location, 255);
   Serial.println("Done. Sketch will now restart using default config.");
   delay(200);
 }
@@ -208,6 +210,21 @@ static bool config(char c)
         }
         break;
 */
+  
+      case 't': // signature test
+       
+        if (EEPROM.read(signature_EEPROM_location) == signature) // 
+        {
+          Serial.println("we have a signature");
+        }
+        else
+        {
+          Serial.println("no signature present");
+        }
+        
+       //EEPROM.update[data.signature] = signature; 
+        break;
+
       case 'g': // set network group
         if (value) // Group 0 is not valid when transmitting
           networkGroup = value;

@@ -23,6 +23,7 @@
                       300 deg = Faulty sensor, sensor broken or disconnected.
                       301 deg = Sensor has never been detected since power-up/reset. 
                       302 deg = Sensor returned an out-of-range value. 
+    V 1.3   30/07/18 TxShield basic functionality by DBates, including EEPROM signature checking.
     
                      
     History (single Phase energy diverter):
@@ -51,9 +52,9 @@
     For serial input, emonHub requires "datacode = 0" in place of "datacodes = ...." as above. ]
     
 */
-const int version = 10;                          // The firmware version 1.0
+const int version = 11;                          // The firmware version 1.10
 
-#define EMONTX_V34                               // Sets the I/O pin allocation. 
+#define EMONTX_SHIELD                            // Sets the I/O pin allocation. 
                                                  // use EMONTX_V2 or EMONTX_V32 or EMONTX_V34 or EMONTX_SHIELD as appropriate
                                                  // NOTE: You must still set the correct calibration coefficients
 
@@ -64,7 +65,7 @@ const int version = 10;                          // The firmware version 1.0
 #define SERIALPRINT                              // include 'human-friendly' print statement for commissioning - comment this line to exclude.
 
 // Pulse counting settings
-#define USEPULSECOUNT                            // include the ability to count pulses. Comment this line if pulse counting is not required.
+//#define USEPULSECOUNT                            // include the ability to count pulses. Comment this line if pulse counting is not required.
 #define PULSEINT 1                               // Interrupt no. for pulse counting: EmonTx V2 = 0, EmonTx V3 = 1, EmonTx Shield - see Wiki
 #define PULSEPIN 3                               // Interrupt input pin: EmonTx V2 = 2, EmonTx V3 = 3, EmonTx Shield - see Wiki
 #define PULSEMINPERIOD 110                       // minimum period between pulses (ms) - default pulse output meters = 100ms
@@ -72,8 +73,8 @@ const int version = 10;                          // The firmware version 1.0
                                                  
 // RFM settings                                  // THIS SKETCH WILL NOT WORK WITH THE RFM12B radio.
 #define RFM69CW                                  // The type of Radio Module, or none.
-                                                 // Can be RFM69CW 
-                                                 //   or SERIALOUT if a wired serial connection is used 
+//#define SERIALOUT                                // Can be RFM69CW 
+//#define EMONESP                                  //   or SERIALOUT if a wired serial connection is used 
                                                  //   or EMONESP if an ESP WiFi module is used
                                                  //     (see http://openenergymonitor.org/emonnode/3872) 
                                                  //   or don't define anything if neither radio nor serial connection is required - in which case 
@@ -99,7 +100,7 @@ int nodeID = 11;                                 //  node ID for this emonTx. Or
 int networkGroup = 210;                          //  wireless network group
                                                  //  - needs to be same as emonBase and emonGLCD. OEM default is 210
 
-
+#define LOOPTIME 5000     // time of outer loop in milliseconds, also time between data transmissions
 
 //--------------------------------------------------------------------------------------------------
 
@@ -108,34 +109,57 @@ int networkGroup = 210;                          //  wireless network group
 
 
 double vCal = 268.97;     // calculated value is 240:11.6 for UK transformer x 13:1 for resistor divider = 268.97
-                          //   for the EU adapter use 260.00, for the USA adapter use 130.00
-#define VCAL_EU 260.0     // can use DIP switch 2 to set this as the starting value.                     
-double i1Cal = 90.91;     // calculated value is 100A:0.05A for transformer / 22 Ohms for resistor = 90.91, or 60.6 for emonTx Shield
-double i2Cal = 90.91;     // calculated value is 100A:0.05A for transformer / 22 Ohms for resistor = 90.91, or 60.6 for emonTx Shield
-double i3Cal = 90.91;     // calculated value is 100A:0.05A for transformer / 22 Ohms for resistor = 90.91, or 60.6 for emonTx Shield
-double i4Cal = 16.67;     // calculated value is 100A:0.05A for transformer / 120 Ohms for resistor
+                          //   for the EU adapter use 250, for the USA adapter use 130.00
 
+#define VCAL_EU 250.00;     // can use DIP switch 2 to set this as the starting value.
+
+
+#if defined(EMONTX_V2) || defined(EMONTX_V32) || defined(EMONTX_V34)
+double i1Cal = 90.91;     // calculated value is 100A:0.05A for transformer / 22 Ohms for resistor = 90.91
+double i2Cal = 90.91;     // calculated value is 100A:0.05A for transformer / 22 Ohms for resistor = 90.91
+double i3Cal = 90.91;     // calculated value is 100A:0.05A for transformer / 22 Ohms for resistor = 90.91
+double i4Cal = 16.67;     // calculated value is 100A:0.05A for transformer / 120 Ohms for resistor
 double i1Lead = 2.00;     // degrees that the v.t. phase error leads the c.t.1 phase error by
 double i2Lead = 2.00;     // degrees that the v.t. phase error leads the c.t.2 phase error by
 double i3Lead = 2.00;     // degrees that the v.t. phase error leads the c.t.3 phase error by
 double i4Lead = 0.20;     // degrees that the v.t. phase error leads the c.t.4 phase error by
+#endif
 
-#define CT4Phase PHASE1   // either PHASE1, PHASE2 or PHASE3 to attach c.t.4 to a phase, or comment this line 
+#if defined(EMONTX_SHIELD)
+double i1Cal = 60.6;      // calculated value is 100A:0.05A for transformer / 33 Ohms for resistor = 60.6
+double i2Cal = 60.6;      // calculated value is 100A:0.05A for transformer / 33 Ohms for resistor = 60.6
+double i3Cal = 60.6;      // calculated value is 100A:0.05A for transformer / 33 Ohms for resistor = 60.6
+double i4Cal = 60.6;      // calculated value is 100A:0.05A for transformer / 33 Ohms for resistor = 60.6
+double i1Lead = 2.00;     // degrees that the v.t. phase error leads the c.t.1 phase error by
+double i2Lead = 2.00;     // degrees that the v.t. phase error leads the c.t.2 phase error by
+double i3Lead = 2.00;     // degrees that the v.t. phase error leads the c.t.3 phase error by
+double i4Lead = 2.00;     // degrees that the v.t. phase error leads the c.t.4 phase error by
+#endif
+
+//#define CT4Phase PHASE1   // either PHASE1, PHASE2 or PHASE3 to attach c.t.4 to a phase, or comment this line 
                           //  if c.t.4 is not used (See also NUMSAMPLES below)
-#define LEDISLOCK         // comment this out for LED pulsed during transmission
+//#define LEDISLOCK         // comment this out for LED pulsed during transmission
                           //  otherwise LED occults, but that is not easily visible
 //--------------------------------------------------------------------------------------------------
 
 //--------------------------------------------------------------------------------------------------
 // other system constants
-#define SUPPLY_VOLTS 3.3  // used here because it's more accurate than the internal band-gap reference. Use 5.0 for Arduino / emonTx Shield
+#if defined(EMONTX_V2) || defined(EMONTX_V32) || defined(EMONTX_V34) //EMONTX_V2 or EMONTX_V32 or EMONTX_V34
+#define SUPPLY_VOLTS 3.3   // used here because it's more accurate than the internal band-gap reference.
+#endif
+#ifdef EMONTX_SHIELD
+#define SUPPLY_VOLTS 5.0  // Important note regarding the TxShield:
+ // A measurement error will very likely derive from using different USB power supplies! This number in reality could be anything from 4.8 to 5.1V depending on the supply.
+ // This will significantly alter all measured readings, as the shield uses the Vcc line as the ADC top reference, and sets voltage divider offsets for the input channels..
+ // An approximate value of SUPPLY_VOLTS for an Uno + TxShield will be 5.00V minus 0.03V as there's a voltage drop accross the 8ohm current limiting input resistor.
+#endif
 #define SUPPLY_FREQUENCY 50
-#define NUMSAMPLES 36     // number of times to sample each 50/60Hz cycle - must be a multiple of 3
+#define NUMSAMPLES 45     // number of times to sample each 50/60Hz cycle - must be a multiple of 3
                           // Permissible maximum values (serial only) 50 Hz, 3 c.t: 45         60 Hz, 3 c.t: 36
                           //                                          50 Hz, 4 c.t: 36         60 Hz, 4 c.t: 33
 #define ADC_BITS 10       // ADC Resolution
 #define ADC_RATE 64       // Time between successive ADC conversions in microseconds
-#define LOOPTIME 5000     // time of outer loop in milliseconds, also time between data transmissions
+
 
 #define PLLTIMERRANGE 100 // PLL timer range limit ~ +/-0.5Hz
 #define PLLLOCKRANGE 40   // allowable ADC range to enter locked state
@@ -196,7 +220,7 @@ double i4Lead = 0.20;     // degrees that the v.t. phase error leads the c.t.4 p
 #define CT4PIN 4
 #define LEDPIN 9
 #define RFMSELPIN 5   // See Wiki
-#define RFMIRQPIN 3   // See Wiki
+#define RFMIRQPIN 2   // See Wiki
 #define SDOPIN 12
 #define W1PIN 4       // 1-Wire pin for temperature
 
