@@ -20,8 +20,8 @@ Interface for the RFM69CW Radio Module
 void rfm_init(void)
 {	
 	// Set up to drive the Radio Module
-	digitalWrite(RFMSELPIN, HIGH);
 	pinMode(RFMSELPIN, OUTPUT);
+	digitalWrite(RFMSELPIN, HIGH); //changed! swapped lines
 	SPI.begin();
 	SPI.setBitOrder(MSBFIRST);
 	SPI.setDataMode(0);
