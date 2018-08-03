@@ -81,3 +81,17 @@ Depending on your ISP
 Or
 
 - Arduino IDE
+
+
+Changed by DB.. 
+. Signature checking. Problem: First time use wouldn’t give any usable results as the original sketch would check at EEPROM address for byte 255, which would be the case only if someone had gone through the calibration routine or done ‘wipe EEPROM’ in ‘+++’ config.
+	Solution: instead I asked the sketch to check at EEPROM address 999 for the byte 035 (035 was my spelling of OEM :) )
+			if the signature is not found then sketch defaults are used.
+			- I’ve tested saving to EEPROM calibration settings, this writes the signature.
+			- I’ve tested wiping the EEPROM, this removes the signature instead of wiping all values up to address ‘255'.
+
+. Wh_accumulator on device for each CT channel. Needless to say, this is useful. Wh are sent over ESP, RFM or SERIALOUT as selected.
+. PowerFactor information sent with ESP, RFM or SERIALOUT as selected.
+. #define CT4Phase selection comments out or in with more logical consistency throughout sketch.
+. #define TEMPERATURE_SENSING FOR using the temp sensors or not, I didn’t have mine soldered on the Tx and thus didn’t want that information six times over as the sketch default was.
+. #define USEPULSECOUNT disables sending pulse counting information more consistently across  ESP, RFM or SERIALOUT as selected.
