@@ -102,3 +102,5 @@ Changed / Added by DB...
 - #define TEMPERATURE_SENSING FOR using the temp sensors or not, I didn’t have mine soldered on the Tx and thus didn’t want that information six times over as the sketch default was.
 
 - #define USEPULSECOUNT disables sending pulse counting information more consistently across  ESP, RFM or SERIALOUT as selected.
+
+- The default value for the EU adaptor I've made accurate for my megni purchased adaptor on TxShield v2
