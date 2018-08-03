@@ -83,7 +83,9 @@ Or
 - Arduino IDE
 
 
-Changed by DB.. 
+
+
+Changed / Added by DB...
 
 - Signature checking. Problem: First time use wouldn’t give any usable results as the original sketch would check at EEPROM address for byte 255, which would be the case only if someone had gone through the calibration routine or done ‘wipe EEPROM’ in ‘+++’ config.
 	Solution: instead I asked the sketch to check at EEPROM address 999 for the byte 035 (035 was my spelling of OEM :) )
