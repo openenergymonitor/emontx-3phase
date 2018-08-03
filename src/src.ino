@@ -18,11 +18,19 @@
     V 1.1   20/02/18 Sleep (sleep_mode()) removed from rfm_sleep() in rfm.ino
     V 1.2   12/03/18 Temperature fault codes were
                       300 deg = Faulty sensor, sensor broken or disconnected.
+<<<<<<< HEAD
                       301 deg = Sensor has never been detected since power-up/reset.
                       302 deg = Sensor returned an out-of-range value.
     V 1.3   30/07/18 TxShield functionality improved by DBates, including EEPROM signature checking.
 
 
+=======
+                      301 deg = Sensor has never been detected since power-up/reset. 
+                      302 deg = Sensor returned an out-of-range value. 
+    V 1.3   30/07/18 TxShield functionality improved by DBates, including EEPROM signature checking.
+    
+                     
+>>>>>>> b08d57d486a2f617f4d195e15084e50ee3fe3faf
     History (single Phase energy diverter):
     2/12/12  first published version
     3/12/12  diverted power calculation & transmission added
@@ -53,7 +61,7 @@ const int version = 10;                          // The firmware version 1.0
 
 #define EMONTX_V34                               // Sets the I/O pin allocation. 
                                                  // use EMONTX_V2 or EMONTX_V32 or EMONTX_V34 or EMONTX_SHIELD as appropriate
-                                                 // NOTE: You must still set the correct calibration coefficients
+                                                 // NOTE: You must still set the correct calibration coefficients and check values below.
 
 #define LOOPTIME 5000
 //#define TEMPERATURE_SENSING
