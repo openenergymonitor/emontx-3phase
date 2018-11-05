@@ -22,7 +22,7 @@ Byte
 #include <EEPROM.h>
 
  // Available Serial Commands
-const PROGMEM char helpText1[] =
+const PROGMEM char helpText1[] =                                
 "\n"
 "Available commands for config during start-up:\n"
 "  <nnn>g    - set Network Group\n"
@@ -59,7 +59,7 @@ static void load_config(bool verbose)
   if (dataPresent)
   {
       for (byte j=0; j<sizeof(data); j++, src++)
-            *src = EEPROM.read(j);
+            *src = EEPROM.read(j); 
 
       nodeID       = data.nodeID;
 //    RF_freq      = data.RF_freq;
@@ -70,20 +70,20 @@ static void load_config(bool verbose)
       i2Cal        = data.i2Cal;
       i2Lead       = data.i2Lead;
       i3Cal        = data.i3Cal;
-      i3Lead       = data.i3Lead;
-      i4Cal        = data.i4Cal;
-      i4Lead       = data.i4Lead;
+      i3Lead       = data.i3Lead; 
+      i4Cal        = data.i4Cal; 
+      i4Lead       = data.i4Lead;      
 
-  }
+  }    
   
   if (verbose)
   {
       if (dataPresent)
         Serial.println(F("Loaded EEPROM config"));
-      else
+      else 
         Serial.println(F("No EEPROM config"));
       list_calibration();
-  }
+  }      
 }
 
 static void list_calibration(void)
@@ -106,8 +106,8 @@ static void save_config()
 
   //Save new settings
   byte* src = (byte*) &data;
-  data.nodeID       = nodeID;
-/*
+  data.nodeID       = nodeID;  
+/*  
   data.RF_freq      = 4; //RF_freq;
 */
   data.networkGroup = networkGroup;
@@ -117,13 +117,13 @@ static void save_config()
   data.i2Cal        = i2Cal;
   data.i2Lead       = i2Lead;
   data.i3Cal        = i3Cal;
-  data.i3Lead       = i3Lead;
-  data.i4Cal        = i4Cal;
-  data.i4Lead       = i4Lead;
+  data.i3Lead       = i3Lead; 
+  data.i4Cal        = i4Cal; 
+  data.i4Lead       = i4Lead;      
 
 
   for (byte j=0; j<sizeof(data); j++, src++)
-      EEPROM[j] = *src;
+      EEPROM[j] = *src;    
 
   for (byte j=0; j<sizeof(data); j++)
   {
@@ -137,7 +137,7 @@ static void wipe_eeprom(void)
   byte* src = (byte*)&data;
   Serial.println(F("Resetting..."));
   for (byte j=0; j<sizeof(data); j++)
-      EEPROM[j] = 255;
+      EEPROM[j] = 255;    
   Serial.println("Done. Sketch will now restart using default config.");
   delay(200);
 }
@@ -179,19 +179,19 @@ void readInput(void)
 
 
 
-static bool config(char c)
+static bool config(char c) 
 {
   
-  if ('0' <= c && c <= '9')
+  if ('0' <= c && c <= '9') 
   {
     value = 10 * value + c - '0';
     return false;
   }
 
-  if (c > ' ')
+  if (c > ' ') 
   {
 
-    switch (c)
+    switch (c) 
     {
       case 'i': //set node ID
         if (value)
@@ -241,7 +241,7 @@ static bool config(char c)
 /*
     //Print Current RF config
 
-    if (RF_STATUS==1)
+    if (RF_STATUS==1) 
 
     {
       Serial.print(F(" "));
@@ -262,7 +262,7 @@ static bool config(char c)
 */
     Serial.println(F(" "));
 
-  }
+  } 
   value = 0;
   return false;
 
@@ -274,20 +274,20 @@ void getCalibration(void)
 {
 /*
  * Reads calibration information (if available) from the serial port. Data is expected in the format
- *
+ * 
  *  k[x] [y] [z]
- *
+ * 
  * where:
  *  [x] = a single numeral: 0 = voltage calibration, 1 = ct1 calibration, 2 = ct2 calibration, etc
  *  [y] = a floating point number for the voltage/current calibration constant
  *  [z] = a floating point number for the phase calibration for this c.t. (z is not needed, or ignored if supplied, when x = 0)
- *
+ * 
  * e.g. k0 256.8
- *      k1 90.9 1.7
- *
+ *      k1 90.9 1.7 
+ * 
  * If power factor is not displayed, it is impossible to calibrate for phase errors,
  *  and the standard value of phase calibration MUST BE SENT when a current calibration is changed.
- *
+ * 
  */
 
 	if (Serial.available())
@@ -295,11 +295,11 @@ void getCalibration(void)
 		char c = Serial.peek();
 		if (c == 'k')
 		{
-			int k1 = Serial.parseFloat();
-			double k2 = Serial.parseFloat();
-			double k3 = Serial.parseFloat();
+			int k1 = Serial.parseFloat(); 
+			double k2 = Serial.parseFloat(); 
+			double k3 = Serial.parseFloat(); 
 			while (Serial.available())
-				Serial.read();
+				Serial.read(); 
 				
 			// Write the values back as Globals, re-calculate intermediate values.
 			switch (k1) {
@@ -356,7 +356,7 @@ void getCalibration(void)
              save_config(); // Save to EEPROM. Atemga328p has 1kB  EEPROM
         // flush the input buffer
         while (Serial.available())
-            Serial.read();
+            Serial.read(); 
         
     }
 }
@@ -367,7 +367,7 @@ static byte bandToFreq (byte band) {
 }
 */
 
-static void showString(PGM_P s) {
+static void showString (PGM_P s) {
   for (;;) {
     char c = pgm_read_byte(s++);
     if (c == 0)
