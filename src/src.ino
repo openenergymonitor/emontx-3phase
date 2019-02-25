@@ -22,6 +22,8 @@
                       compiler error in Arduino IDE V1.8.7
     V 1.4   22/10/18 Added 3-wire options & switch for 4-wire / 3-wire operation, 
                       free choice of phase for all four c.t's. 
+    V 1.5            Documentation change only
+    V 1.6   24/2/19  Unwanted space in emonESP output removed. No change to documentation.
                       
     
                      
@@ -939,9 +941,9 @@ void sendResults()
   #if defined EMONESP && !defined SERIALOUT
     #if WIRES == 3-WIRE
     Serial.print(F("ct1:")); Serial.print(realPower1+realPower2);            // These for compatibility, but whatever you need if the receiver is configured to suit. 
-    Serial.print(F(",ct2: 0.0"));
+    Serial.print(F(",ct2:0.0"));
     #else
-    Serial.print(F(",ct1:")); Serial.print(realPower1);
+    Serial.print(F("ct1:")); Serial.print(realPower1);
     Serial.print(F(",ct2:")); Serial.print(realPower2);
     #endif    
     Serial.print(F(",ct3:")); Serial.print(realPower3);
