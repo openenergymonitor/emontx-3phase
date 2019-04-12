@@ -78,6 +78,7 @@ const int version = 14;                          // The firmware version 1.4
                                                  //   Set to 0 for electronic sensor with solid-state output.
                                                  
 // RFM settings                                  // THIS SKETCH WILL NOT WORK WITH THE RFM12B radio.
+//#define EMONESP                                // Uncomment to use the sketch with EmonESP and comment out the line below #define RFM69CW
 #define RFM69CW                                  // The type of Radio Module, or none.
                                                  // Can be RFM69CW 
                                                  //   or SERIALOUT if a wired serial connection is used 
