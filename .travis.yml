@@ -9,19 +9,7 @@ install:
 - pip install -U platformio
 script:
 - platformio --version
-- platformio run -e emontx-3phase_deploy
-deploy:
-  provider: releases
-  skip_cleanup: true
-  overwrite: true
-  api_key:
-    secure: W3yApd7fHFYwGazmWBfJRWuSh5nRvWs7Rg/xEi6vXZ2gB0fybl0/Zbi09WdVkfS+f26JwtNPhqktKVWr47zaJ3IfrLSnWANki4TpbgoPhYGvS/UuPqvBx8oT7zX3RXaIR09hHwOzZcraysfd/tg2qyt0Fv8JC+yORdqFBhrDsMKi5pIHyRvesgMi+HNIX6PvZfLC+kLPycH1pRhuHe7fjlMuan562pQAjR3XFeujO/9k17K4JipMd5jwgMNNbKewGd7dJ1EPL122QsdyOrQxwU8vL0ZN2zqwRKo10QOzvx6kcZXqQ5DO9oIdXU/Y6O18A2aepicBZDntLhbCXmMz4lo05u4u+wErTZGmFqdY0So2OkPCF3FSEMEGGc5+QRue3gx8oHWCuq1IAcA7MNi0dEUkwb1gngi2dexXMNmZzs+LFvgX7mKadB+N5jBJ5aLO0rWHibsEPCeJvWyhrXAhQbeezf1rGm3NadK/XiO5suM2EErw3eEUq7iHkntEEZuSzglfsEzELd/4Ixw6ziH2Dn073wozm8jhzcaGFjJ83/Gb/OEEtUBzmSgG8wV254QyyWIu9zldT+AP65TMBTGBSobnLPHxXTQODEhohMs/cAj23YHQ9SzXUjku8PAXsa5wEJM9lTirRLtGPo9hYlkY+pcEgcZT+vUqTO9QQvnxB/Q=
-  file: ".pioenvs/emontx-3phase_deploy/firmware.hex"
-  on:
-    repo: openenergymonitor/emontx-3phase
-    all_branches: true
-    tags: true
-    condition: $TRAVIS_TAG =~ ^[0-9]+\.[0-9]+\.[0-9]+$
+- platformio run -e emontx-3phase
     
 ## Setup auto depoly .hex on release tag
 # sudo gem install travis
