@@ -1,7 +1,5 @@
 # emonTx V3 3-phase Firmware
 
-[![Build Status](https://travis-ci.org/openenergymonitor/emontx-3phase.svg?branch=master)](https://travis-ci.org/openenergymonitor/emontx-3phase)
-
 This sketch is a development of the 3-phase ‘discrete sample’ sketch and MartinR’s PLL
 energy diverter.
 
